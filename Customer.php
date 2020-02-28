@@ -1,18 +1,19 @@
 <?php 
 class Customers {
     private $name,$address,$affiliate;
-    public function PlasceOrder($order,$affiliate,$Store){
-        if($affiliate->getUpperAffiliate()!=null){
-            $affiliate->setBalance($affiliate->getBalance()+$order->getTotal()*0.1);
-            // echo $affiliate->getBalance();
+    public function PlasceOrder($order,$Store){
+        //nếu có affiliate trước đó affiliate->affiliate->customer
+        if($this->affiliate->getUpperAffiliate()!=null){
+            //tính balance của affilia giới thiệu khách hàng này
+            $this->affiliate->setBalance($this->affiliate->getBalance()+$order->getTotal()*0.1);
+            //tính balance của affiliate đã giới thiệu affiliate giới thiệu khách hàng này
+           $this->affiliate->getUpperAffiliate()->setBalance($this->affiliate->getUpperAffiliate()->getBalance()+$this->affiliate->getBalance()*0.5);
+            //balance cửa hàng còn lại khi thanh toán cho các affiliate
             $Store->setBalance($Store->getBalance()+$order->getTotal()*0.85);
         }else{
             $Store->setBalance($Store->getBalance()+$order->getTotal()*0.9);
         }
         
-        // print_r($affiliate);
-        // print_r($Store);
-        // echo"<br>";
     }
 
     /**
@@ -68,9 +69,9 @@ class Customers {
      *
      * @return  self
      */ 
-    public function setAffiliate($affiliate)
+    public function setAffiliate($_affiliate)
     {
-        $this->affiliate = $affiliate;
+        $this->affiliate = $_affiliate;
 
         return $this;
     }

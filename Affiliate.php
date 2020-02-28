@@ -1,12 +1,14 @@
 <?php 
 class Affiliate {
     private $name,$balance=0,$upperAffiliate,$subAffiliates=array(),$customers=array();
+    function __construct($name) {
+        $this->name=$name;
+    }
     public function Refer($name){
         if($name instanceof Customers){
            $this->customers[]=$name;
         }else{
            $this->subAffiliates[]=$name;
-           $this->setBalance($this->getBalance()+$name->getBalance()*0.5);
         }
     }
     public function Withdraw($v){  
@@ -28,8 +30,6 @@ class Affiliate {
     }
     public function PrintSubAff(){
        foreach($this->subAffiliates as $v){
-        //    print_r($v->getName());
-        //    print_r($v->getBalance());
            echo ($v->getName()." ".$v->getBalance());
            echo"</br>";
        }
@@ -91,9 +91,9 @@ class Affiliate {
      *
      * @return  self
      */ 
-    public function setUpperAffiliate($upperAffiliate)
+    public function setUpperAffiliate($_upperAffiliate)
     {
-        $this->upperAffiliate = $upperAffiliate;
+        $this->upperAffiliate = $_upperAffiliate;
 
         return $this;
     }
